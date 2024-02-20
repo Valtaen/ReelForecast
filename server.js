@@ -1,29 +1,40 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+const express = require('express')
+const app = express()
+const bcrypt = require('bcrypt')
 
-const app = express();
+app.use(express.json())
 
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
+const users = []
 
-// Routes
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
+app.get('/users', (req, res) => {
+  res.json(users)
+})
 
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    // Validate username and password (this is a basic example)
-    if (username === 'admin' && password === 'password') {
-        res.send('Login successful!');
+app.post('/users', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    const user = { name: req.body.name, password: hashedPassword }
+    users.push(user)
+    res.status(201).send()
+  } catch {
+    res.status(500).send()
+  }
+})
+
+app.post('/users/login', async (req, res) => {
+  const user = users.find(user => user.name === req.body.name)
+  if (user == null) {
+    return res.status(400).send('Cannot find user')
+  }
+  try {
+    if(await bcrypt.compare(req.body.password, user.password)) {
+      res.send('Success')
     } else {
-        res.status(401).send('Invalid username or password');
+      res.send('Not Allowed')
     }
-});
+  } catch {
+    res.status(500).send()
+  }
+})
 
-// Start server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+app.listen(3000)
