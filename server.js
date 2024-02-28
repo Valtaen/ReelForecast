@@ -45,12 +45,13 @@ app.get("/users/register", checkAuthenticated, (req, res) => {
 
 app.get("/users/login", checkAuthenticated, (req, res) => {
   // flash sets a messages variable. passport sets the error message
-  console.log(req.session.flash.error);
+  console.log(req.session.flash.error, 'Here?');
+  //Yup, here
   res.render("login.ejs");
 });
 
 app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated());
+  console.log(req.isAuthenticated(), 'Is this where?');
   res.render("dashboard", { user: req.user.name });
 });
 
@@ -99,7 +100,7 @@ app.post("/users/register", async (req, res) => {
     console.log(userEmail);
     // Validation passed
     pool.query(
-      q, userEmails,
+      q, userEmail,
       (err, results) => {
         if (err) {
           console.log(err);
@@ -112,9 +113,12 @@ app.post("/users/register", async (req, res) => {
           });
         } else {
           let p = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, password'
-          let userName = [`{${name}}`]
-          let userPW = [`{${hashedpassword}}`]
-          pool.query(p, [userName, userEmail, userPW],
+          // let userName = [`{${name}}`]
+          // let userPW = [`{${hashedPassword}}`]
+          let userName = [name]
+          let userPW = [hashedPassword]
+          let finEmail = [email];
+          pool.query(p, [userName, finEmail, userPW],
             (err, results) => {
               if (err) {
                 throw err;

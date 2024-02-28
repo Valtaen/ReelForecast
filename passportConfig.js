@@ -8,9 +8,12 @@ function initialize(passport) {
   const authenticateUser = async (email, password, done) => {
     console.log(email, password);
 
+    let q = 'SELECT * FROM users WHERE email = $1';
+    console.log(q);
+    let userEmail = [`{${email}}`]
+
    pool.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email],
+      q, userEmail,
       (err, results) => {
         if (err) {
           throw err;
@@ -19,8 +22,12 @@ function initialize(passport) {
 
         if (results.rows.length > 0) {
           const user = results.rows[0];
+          console.log(password, '1');
+          console.log(user.password, '2');
+          const tempPW = password.toString();
+          const tempPW2 = user.password.toString();
 
-          bcrypt.compare(password, user.password, (err, isMatch) => {
+          bcrypt.compare(tempPW, tempPW2, (err, isMatch) => {
             if (err) {
               console.log(err);
             }
