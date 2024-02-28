@@ -1,0 +1,18 @@
+*{
+    box-sizing: border-box;
+	margin: 0;
+	font-family: 'Ubuntu Condensed', sans-serif;
+}
+
+#wrapper{
+    width: 100%;
+}
+
+#page_top{
+    width: 100%;
+}
+
+#content{
+    width: 85%;
+}
+
