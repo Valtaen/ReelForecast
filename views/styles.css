@@ -10,9 +10,32 @@
 
 #page_top{
     width: 100%;
+    display:grid;
+    grid-template-columns: 85% 15%;
+    grid-template-rows: 66.7% 33.3%;
+    grid-template-areas:
+     "logo profile"
+     "welcome logout";
+}
+
+#logo{
+    grid-area: logo;
+}
+
+#profile{
+    grid-area: profile;
+}
+
+#logout{
+    grid-area: logout;
+}
+
+#page_top h4{
+    grid-area: welcome;
 }
 
 #content{
     width: 85%;
+    margin: 0 auto 40px;
 }
 
