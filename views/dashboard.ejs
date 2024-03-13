@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="stylesheet" href = "styles.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Dashboard</title>
@@ -26,7 +29,7 @@
             <thead>
               <tr>
                 <!--Loop through to create days-->
-                <% for(let i = 0; i < 10; i++){ %>
+                <% for(let i = 0; i < 8; i++){ %>
                   <!--Replace with calendar data-->
                   <th> <% 'Day '+i %> </th>
                   <% } %>
@@ -35,10 +38,34 @@
 
 
             <tbody>
+
+
               <!--Loop through each measurement type to create a row-->
-              <tr> 
-                <!--Loop through the data obtained by API and create a <td></td> for each (per measurement type)-->
-              </tr>
+              <% for(let i = 0; i < 15; i++) {%>
+                <tr> 
+
+
+                  <% for(let j = 0; j < 8; j++) {%>
+                    <td> 
+
+
+                      <!--Might need a new div to style correctly--> 
+                      <ul>
+                        <% for(let k = 0; k < 24; k++) {%>
+                          <!--This line gets each hour's data for the measurement that the i loop is on-->
+                          <li> <% 'Hour' + k %> </li>
+                        <% }%>
+                      </ul>  
+
+
+                    </td>
+                  <% }%>
+
+
+                </tr>
+              <% }%>
+
+
             </tbody>
           </table>
         </div>
