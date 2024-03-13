@@ -2,19 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"
-    />
+    <link rel="stylesheet" href = "styles.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Dashboard</title>
   </head>
   <body>
-    <h1>Dashboard</h1>
+    <div id = "wrapper">
+      <div id = "page_top">
+        <div id = "logo"><a href = ""><img src = "" alt = "the logo"></a></div>
+        <div id = "profile"><img src = "" alt = "profile picture"></div>
+        <h4>Hello <%= user %></h4>
+        
+        <div id = "logout"><a href="/users/logout">Logout</a></div>
+      </div>
 
-    <a href="/users/logout">Logout</a>
+      <div id = "content">
+        <main>
+          <h1>Dashboard</h1>
+        </main>
+        <div id = "forecast">
+          <table>
+            <thead>
+              <tr>
+                <!--Loop through to create days-->
+                <% for(let i = 0; i < 10; i++){ %>
+                  <!--Replace with calendar data-->
+                  <th> <% 'Day '+i %> </th>
+                  <% } %>
+              </tr>
+            </thead>
 
-    <h4>Hello <%= user %></h4>
+
+            <tbody>
+              <!--Loop through each measurement type to create a row-->
+              <tr> 
+                <!--Loop through the data obtained by API and create a <td></td> for each (per measurement type)-->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+      </div>
+      
+
+      
+      <div id = "page_bottom"> 
+        <nav id = "map"><a href = "">Add location</a></nav>
+        <nav id = "parameters"><a href = "">Adjust Parameters</a></nav>
+      </div>
+    </div>
   </body>
 </html>
