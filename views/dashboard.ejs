@@ -25,11 +25,72 @@
           <table>
             <thead>
               <tr>
+                <th><div id = "day1"></div></th>
+                <th><div id = "day2"></div></th>
+                <th><div id = "day3"></div></th>
+                <th><div id = "day4"></div></th>
+                <th><div id = "day5"></div></th>
+                <th><div id = "day6"></div></th>
+                <th><div id = "day7"></div></th>
+                <th><div id = "day8"></div></th>
                 <!--Loop through to create days-->
-                <% for(let i = 0; i < 8; i++){ %>
+                <% const now = new Date();
+                document.querySelector("day1").innerHTML = now.getDate();
+                for(let i = 2; i <= 8; i++){ %>
+                  <%document.querySelector("#day"+i).innerHTML = parseInt(document.querySelector("day"+i-1).innerHTML) + 1;
+                  switch(now.getMonth()){
+                    case 1:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 2:
+                      if(document.querySelector("#day"+i).innerHTML > 28)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 3:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 4:
+                      if(document.querySelector("#day"+i).innerHTML > 30)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 5:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 6:
+                      if(document.querySelector("#day"+i).innerHTML > 30)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 7:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 8:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 9:
+                      if(document.querySelector("#day"+i).innerHTML > 30)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 10:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 11:
+                      if(document.querySelector("#day"+i).innerHTML > 30)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;
+                    case 12:
+                      if(document.querySelector("#day"+i).innerHTML > 31)
+                      document.querySelector("#day"+i).innerHTML = 1;
+                      break;                                                                                      
+                  }
+                }
+                %>
                   <!--Replace with calendar data-->
-                  <th> <% 'Day '+i %> </th>
-                  <% } %>
               </tr>
             </thead>
 
