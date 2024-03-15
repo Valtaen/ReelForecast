@@ -35,10 +35,11 @@
                 <th><div id = "day7"></div></th>
                 <th><div id = "day8"></div></th>
                 <!--Loop through to create days-->
-                <% const now = new Date();
+                <script>
+                const now = new Date();
                 document.querySelector("day1").innerHTML = now.getDate();
-                for(let i = 2; i <= 8; i++){ %>
-                  <%document.querySelector("#day"+i).innerHTML = parseInt(document.querySelector("day"+i-1).innerHTML) + 1;
+                for(let i = 2; i <= 8; i++){ 
+                  document.querySelector("#day"+i).innerHTML = parseInt(document.querySelector("day"+i-1).innerHTML) + 1;
                   switch(now.getMonth()){
                     case 1:
                       if(document.querySelector("#day"+i).innerHTML > 31)
@@ -89,8 +90,7 @@
                       document.querySelector("#day"+i).innerHTML = 1;
                       break;                                                                                      
                   }
-                }
-                %>
+                }</script>
                   <!--Replace with calendar data-->
               </tr>
             </thead>
