@@ -112,7 +112,7 @@
                       <ul>
                         <% for(let k = 0; k < 24; k++) {%>
                           <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <% 'Hour' + k %> </li>
+                          <li> <%=weatherJSON.hourly.temperature_2m[k+(j*24)]%> </li>
                         <% }%>
                       </ul>  
 
