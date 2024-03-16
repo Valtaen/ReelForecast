@@ -100,8 +100,7 @@
 
 
               <!--Loop through each measurement type to create a row-->
-              <% for(let i = 0; i < 15; i++) {%>
-                <tr> 
+              <tr> 
 
 
                   <% for(let j = 0; j < 8; j++) {%>
@@ -122,7 +121,115 @@
 
 
                 </tr>
-              <% }%>
+
+                <tr> 
+
+
+                  <% for(let j = 0; j < 8; j++) {%>
+                    <td> 
+
+
+                      <!--Might need a new div to style correctly--> 
+                      <ul>
+                        <% for(let k = 0; k < 24; k++) {%>
+                          <!--This line gets each hour's data for the measurement that the i loop is on-->
+                          <li> <%=weatherJSON.hourly.wind_direction_10m[k+(j*24)]%> </li>
+                        <% }%>
+                      </ul>  
+
+
+                    </td>
+                  <% }%>
+
+
+                </tr>
+              
+                <tr> 
+
+
+                  <% for(let j = 0; j < 8; j++) {%>
+                    <td> 
+
+
+                      <!--Might need a new div to style correctly--> 
+                      <ul>
+                        <% for(let k = 0; k < 24; k++) {%>
+                          <!--This line gets each hour's data for the measurement that the i loop is on-->
+                          <li> <%=weatherJSON.hourly.wind_speed_10m[k+(j*24)]%> </li>
+                        <% }%>
+                      </ul>  
+
+
+                    </td>
+                  <% }%>
+
+
+                </tr>
+
+                <tr> 
+
+
+                  <% for(let j = 0; j < 8; j++) {%>
+                    <td> 
+
+
+                      <!--Might need a new div to style correctly--> 
+                      <ul>
+                        <% for(let k = 0; k < 24; k++) {%>
+                          <!--This line gets each hour's data for the measurement that the i loop is on-->
+                          <li> <%=marineJSON.hourly.wave_height[k+(j*24)]%> </li>
+                        <% }%>
+                      </ul>  
+
+
+                    </td>
+                  <% }%>
+
+
+                </tr>
+
+                <tr> 
+
+
+                  <% for(let j = 0; j < 8; j++) {%>
+                    <td> 
+
+
+                      <!--Might need a new div to style correctly--> 
+                      <ul>
+                        <% for(let k = 0; k < 24; k++) {%>
+                          <!--This line gets each hour's data for the measurement that the i loop is on-->
+                          <li> <%=marineJSON.hourly.wave_direction[k+(j*24)]%> </li>
+                        <% }%>
+                      </ul>  
+
+
+                    </td>
+                  <% }%>
+
+
+                </tr>
+
+                <tr> 
+
+
+                  <% for(let j = 0; j < 8; j++) {%>
+                    <td> 
+
+
+                      <!--Might need a new div to style correctly--> 
+                      <ul>
+                        <% for(let k = 0; k < 24; k++) {%>
+                          <!--This line gets each hour's data for the measurement that the i loop is on-->
+                          <li> <%=marineJSON.hourly.wave_period[k+(j*24)]%> </li>
+                        <% }%>
+                      </ul>  
+
+
+                    </td>
+                  <% }%>
+
+                </tr>
 
 
             </tbody>
