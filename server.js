@@ -1,37 +1,32 @@
+require("dotenv").config();
 const express = require("express");
-const { pool } = require("./dbConfig");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
 const session = require("express-session");
-require("dotenv").config();
 const app = express();
-
+const { pool } = require("./dbConfig");
+const initializePassport = require("./passportConfig");
 const PORT = process.env.PORT || 3005;
 
-const initializePassport = require("./passportConfig");
+let latLong = [0.0,0.0];
+let marineJSON;
+let weatherJSON;
+
 
 initializePassport(passport);
 
-// Middleware
-
-// Parses details from a form
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
 
 app.use(
   session({
-    // Key we want to keep secret which will encrypt all of our information
     secret: process.env.SESSION_SECRET,
-    // Should we resave our session variables if nothing has changes which we dont
     resave: false,
-    // Save empty value if there is no vaue which we do not want to do
     saveUninitialized: false
   })
 );
-// Funtion inside passport which initializes passport
 app.use(passport.initialize());
-// Store our variables to be persisted across the whole session. Works with app.use(Session) above
 app.use(passport.session());
 app.use(flash());
 
@@ -44,15 +39,34 @@ app.get("/users/register", checkAuthenticated, (req, res) => {
 });
 
 app.get("/users/login", checkAuthenticated, (req, res) => {
-  // flash sets a messages variable. passport sets the error message
-  console.log(req.session.flash.error, 'Here?');
-  //Yup, here
   res.render("login.ejs");
 });
 
 app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
-  console.log(req.isAuthenticated(), 'Is this where?');
-  res.render("dashboard", { user: req.user.name });
+  res.render("dashboardtemp", { user: req.user.name });
+});
+
+app.post("/users/apiCall", checkNotAuthenticated, async (req, res) => {
+
+  res.render("apiCall", { user: req.user.name });
+ 
+  try {
+    latLong = await getLatLong(req.session.passport.user)
+  }
+  catch (error){
+    throw error;
+  }
+}
+);
+ 
+app.post("/users/apiCall2", checkNotAuthenticated, async (req, res) => {
+  const marineURL = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=wave_height,wave_direction,wave_period&timezone=America%2FNew_York&length_unit=imperial';
+  const weatherURL = 'https://api.open-meteo.com/v1/forecast?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=temperature_2m,precipitation,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&forecast_days=14'
+  console.log(marineURL, weatherURL)
+  const marineAPIP = fetch(marineURL).then(response => response.json()).then(data => {marineJSON = data}).then(console.log(marineJSON, 'MarineJSON'))
+  const weatherAPIP = fetch(weatherURL).then(response => response.json()).then(data => {weatherJSON = data}).then(console.log(weatherJSON, 'WeatherJSON'))
+  
+  Promise.all([marineAPIP, weatherAPIP]).then(res.render("dashboard", { user: req.user.name, weatherJSON, marineJSON }))
 });
 
 app.get("/users/logout", (req,res) => {
@@ -63,17 +77,11 @@ app.get("/users/logout", (req,res) => {
   });
 });
 
+
 app.post("/users/register", async (req, res) => {
   let { name, email, password, password2 } = req.body;
 
   let errors = [];
-
-  console.log({
-    name,
-    email,
-    password,
-    password2
-  });
 
   if (!name || !email || !password || !password2) {
     errors.push({ message: "Please enter all fields" });
@@ -91,21 +99,17 @@ app.post("/users/register", async (req, res) => {
     res.render("register", { errors, name, email, password, password2 });
   } else {
     hashedPassword = await bcrypt.hash(password, 10);
-    console.log(hashedPassword);
-    console.log(email);
-    
     let q = 'SELECT * FROM users WHERE email = $1';
     console.log(q);
     let userEmail = [`{${email}}`]
-    console.log(userEmail);
-    // Validation passed
+   
     pool.query(
       q, userEmail,
       (err, results) => {
         if (err) {
           console.log(err);
         }
-        else{console.log(results.rows);}
+        else{}
 
         if (results.rows.length > 0) {
           return res.render("register", {
@@ -113,8 +117,6 @@ app.post("/users/register", async (req, res) => {
           });
         } else {
           let p = 'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, password'
-          // let userName = [`{${name}}`]
-          // let userPW = [`{${hashedPassword}}`]
           let userName = [name]
           let userPW = [hashedPassword]
           let finEmail = [email];
@@ -160,3 +162,48 @@ function checkNotAuthenticated(req, res, next) {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// async function getLatLong(spot, id) {
+// async function getLatLong(id) {
+  // var spotNameLat = 'spot' + spot + 'lat'
+  // var spotNameLong = 'spot' + spot + 'long'
+  // var queryString1 = 'SELECT ' + spotNameLat + ' FROM users WHERE id = ' +id;
+  // var queryString2 = 'SELECT ' + spotNameLong + ' FROM users WHERE id = ' +id;
+
+//   var queryString1 = 'SELECT spot1lat FROM users WHERE id = ' +id;
+//   var queryString2 = 'SELECT spot1long FROM users WHERE id = ' +id;
+//   pool.query(queryString1, 
+//     (err, results) => {
+//       if (err) {
+//         throw err;
+//       }
+//       console.log(results.rows[0].spot1lat);
+//       latLong[0] = results.rows[0].spot1lat;
+//      }
+//     );
+//   pool.query(queryString2, 
+//     (err, results) => {
+//       if (err) {
+//         throw err;
+//       }
+//       console.log(results.rows[0].spot1long);
+//       latLong[1] = results.rows[0].spot1long;
+//       }
+//     );
+// return latLong;
+// }
+
+async function getLatLong(id) {
+  var queryString1 = 'SELECT spot1lat, spot1long FROM users WHERE id = ' +id;
+    pool.query(queryString1, 
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results.rows[0].spot1lat, results.rows[0].spot1long);
+      latLong[0] = results.rows[0].spot1lat;
+      latLong[1] = results.rows[0].spot1long;
+     }
+    );
+return latLong;
+}
