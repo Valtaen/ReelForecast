@@ -18,6 +18,7 @@ initializePassport(passport);
 
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "ejs");
+app.use(express.static(__dirname));
 
 app.use(
   session({
@@ -48,25 +49,21 @@ app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
 
 app.post("/users/apiCall", checkNotAuthenticated, async (req, res) => {
 
-  res.render("apiCall", { user: req.user.name });
- 
   try {
     latLong = await getLatLong(req.session.passport.user)
+    const marineURL = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=wave_height,wave_direction,wave_period&timezone=America%2FNew_York&length_unit=imperial';
+    const weatherURL = 'https://api.open-meteo.com/v1/forecast?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=temperature_2m,precipitation,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&forecast_days=14'
+    console.log(marineURL, weatherURL);      
+    const marineData = await fetch(marineURL);
+    const weatherData = await fetch(weatherURL);
+    const marineJSON = await marineData.json();
+    const weatherJSON = await weatherData.json();
+    console.log(marineJSON)
+    res.render("dashboard", { user: req.user.name, weatherJSON, marineJSON })
+
+  } catch (error) {
+      console.log('Error!!')
   }
-  catch (error){
-    throw error;
-  }
-}
-);
- 
-app.post("/users/apiCall2", checkNotAuthenticated, async (req, res) => {
-  const marineURL = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=wave_height,wave_direction,wave_period&timezone=America%2FNew_York&length_unit=imperial';
-  const weatherURL = 'https://api.open-meteo.com/v1/forecast?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=temperature_2m,precipitation,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&forecast_days=14'
-  console.log(marineURL, weatherURL)
-  const marineAPIP = fetch(marineURL).then(response => response.json()).then(data => {marineJSON = data}).then(console.log(marineJSON, 'MarineJSON'))
-  const weatherAPIP = fetch(weatherURL).then(response => response.json()).then(data => {weatherJSON = data}).then(console.log(weatherJSON, 'WeatherJSON'))
-  
-  Promise.all([marineAPIP, weatherAPIP]).then(res.render("dashboard", { user: req.user.name, weatherJSON, marineJSON }))
 });
 
 app.get("/users/logout", (req,res) => {
