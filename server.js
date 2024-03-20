@@ -204,3 +204,7 @@ async function getLatLong(id) {
     );
 return latLong;
 }
+
+app.get("/preferences", (req, res)=> {
+  res.render("preferences")
+})
