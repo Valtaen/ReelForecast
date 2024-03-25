@@ -197,8 +197,8 @@
           </table>
 
           <form action = "/users/addLocation" method = "POST">
-          <input type ="number" id = "latitude" name = "latitude" placeholder="Latitude" min = "-179.9999" max = "179.9999">
-          <input type ="number" id = "longitude" name = "longitude" placeholder="Longitude" min = "-179.9999" max = "179.9999">
+          <input type ="number" id = "latitude" name = "latitude" placeholder="Latitude" min = "-179.9999" max = "179.9999" step = ".0001">
+          <input type ="number" id = "longitude" name = "longitude" placeholder="Longitude" min = "-179.9999" max = "179.9999" step = ".0001">
           <input type="text" id="spotname" name="spotname" placeholder="Spot Name" required>
           <input type = "submit" value = "addLocation">
         </form>
