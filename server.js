@@ -1,3 +1,4 @@
+
 require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcrypt");
@@ -158,6 +159,48 @@ app.post(
 app.post("/users/addLocation", (req, res) =>{
   //req.body is the data sent by the form, latitude and longitude are the *name* attribute in the form.
   console.log(req.body.latitude + " " + req.body.longitude);
+  var userID = [req.session.passport.user];
+  var spot = '';
+  let q = 'SELECT * FROM users WHERE id = $1 AND $2 IS NOT NULL'
+  for (let i =1; i<6; i++){
+    try {
+      spot = 'spot' + i + 'name'
+      console.log(spot)
+      pool.query(
+        q, [userID, spot],
+        (err, results) => {
+          if (err) {
+            console.log(err);
+          }
+          else{}
+  
+          if (results.rows.length > 0) {
+            console.log('checknext')
+          } else {
+            var latcol = ['spot' + i + 'lat']
+            var longcol = ['spot' + i + 'long']
+            var spotname = [req.body.spotname]
+            var latdata = [req.body.latitude]
+            var longdata = [req.body.longitude]
+            let p = 'INSERT INTO users ($1, $2, $3) VALUES ($4, $5, $6)'
+            pool.query(p, [spot, latcol, longcol, spotname, latdata, longdata],
+              (err, results) => {
+                if (err) {
+                  throw err;
+                }
+                console.log(results.rows);
+                req.flash("success_msg", "Your new spot has been saved!");
+              }
+            );
+          }
+        }
+      );
+    }
+    catch {
+  
+    }
+  }
+
 })
 
 function checkAuthenticated(req, res, next) {
