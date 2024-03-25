@@ -52,6 +52,10 @@
     flex-direction: row;
 }
 
+table, th, tr, td {
+    border:1px solid black;
+  }
+
 #page_bottom{
     width: 85%;
     margin: 0 auto 0;
