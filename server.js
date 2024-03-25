@@ -266,6 +266,19 @@ async function getLatLong(id) {
 return latLong;
 }
 
+async function checkSpot(spot, id) {
+  var queryString = 'SELECT ' + spot + ' FROM users WHERE id= ' + id;
+  pool.query(queryString, 
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results.rows);
+
+     }
+    );
+}
+
 app.get("/preferences", (req, res)=> {
   res.render("preferences")
 })
