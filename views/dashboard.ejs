@@ -20,20 +20,20 @@
       <div id = "content">
         <main>
           <h1>Dashboard</h1>
-          
         </main>
+
         <div id = "forecast">
           <table>
             <thead>
               <tr>
-                <th><div id = "day1"></div></th>
-                <th><div id = "day2"></div></th>
-                <th><div id = "day3"></div></th>
-                <th><div id = "day4"></div></th>
-                <th><div id = "day5"></div></th>
-                <th><div id = "day6"></div></th>
-                <th><div id = "day7"></div></th>
-                <th><div id = "day8"></div></th>
+                <th colspan="24"><div id = "day1"></div>Day 1</th>
+                <th colspan="24"><div id = "day2"></div>Day 2</th>
+                <th colspan="24"><div id = "day3"></div>Day 3</th>
+                <th colspan="24"><div id = "day4"></div>Day 4</th>
+                <th colspan="24"><div id = "day5"></div>Day 5</th>
+                <th colspan="24"><div id = "day6"></div>Day 6</th>
+                <th colspan="24"><div id = "day7"></div>Day 7</th>
+                <th colspan="24"><div id = "day8"></div>Day 8</th>
                 <!--Loop through to create days-->
                 <script>
                 const now = new Date();
@@ -94,146 +94,108 @@
                   <!--Replace with calendar data-->
               </tr>
             </thead>
-
-
             <tbody>
-
-
-              <!--Loop through each measurement type to create a row-->
-              <tr> 
-
-
-                  <% for(let j = 0; j < 8; j++) {%>
-                    <td> 
-
-
-                      <!--Might need a new div to style correctly--> 
+              <tr>
+                <td>Hour</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
                       <ul>
-                        <% for(let k = 0; k < 24; k++) {%>
-                          <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <%= weatherJSON.hourly.temperature_2m[k+(j*24)]%> </li>
-                        <% }%>
-                      </ul>  
-
-
+                        <li> <%= weatherJSON.hourly.time[k+(j*24)]%></li>
+                      </ul>
                     </td>
+                  </td>
                   <% }%>
+                <% }%>
+              </tr>
 
-
-                </tr>
-
-                <tr> 
-
-
-                  <% for(let j = 0; j < 8; j++) {%>
-                    <td> 
-
-
-                      <!--Might need a new div to style correctly--> 
+              <tr>
+                <td>Temperature</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
                       <ul>
-                        <% for(let k = 0; k < 24; k++) {%>
-                          <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <%= weatherJSON.hourly.precipitation[k+(j*24)]%> </li>
-                        <% }%>
-                      </ul>  
-
-
+                        <li> <%= weatherJSON.hourly.temperature_2m[k+(j*24)]%>°F</li>
+                      </ul>
                     </td>
+                  </td>
                   <% }%>
+                <% }%>
+              </tr>
 
-
-                </tr>
-              
-                <tr> 
-
-
-                  <% for(let j = 0; j < 8; j++) {%>
-                    <td> 
-
-
-                      <!--Might need a new div to style correctly--> 
+              <tr>
+                <td>Precipitation</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
                       <ul>
-                        <% for(let k = 0; k < 24; k++) {%>
-                          <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <%= weatherJSON.hourly.wind_speed_10m[k+(j*24)]%> </li>
-                        <% }%>
-                      </ul>  
-
-
+                        <li> <%= weatherJSON.hourly.precipitation[k+(j*24)]%> inches</li>
+                      </ul>
                     </td>
+                  </td>
                   <% }%>
+                <% }%>
+              </tr>
 
-
-                </tr>
-
-                <tr> 
-
-
-                  <% for(let j = 0; j < 8; j++) {%>
-                    <td> 
-
-
-                      <!--Might need a new div to style correctly--> 
+              <tr>
+                <td>Wind Speed</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
                       <ul>
-                        <% for(let k = 0; k < 24; k++) {%>
-                          <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <%= marineJSON.hourly.wave_height[k+(j*24)]%> </li>
-                        <% }%>
-                      </ul>  
-
-
+                        <li> <%= weatherJSON.hourly.wind_speed_10m[k+(j*24)]%> knots</li>
+                      </ul>
                     </td>
+                  </td>
                   <% }%>
+                <% }%>
+              </tr>
 
-
-                </tr>
-
-                <tr> 
-
-
-                  <% for(let j = 0; j < 8; j++) {%>
-                    <td> 
-
-
-                      <!--Might need a new div to style correctly--> 
+              <tr>
+                <td>Wave Height</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
                       <ul>
-                        <% for(let k = 0; k < 24; k++) {%>
-                          <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <%= marineJSON.hourly.wave_direction[k+(j*24)]%> </li>
-                        <% }%>
-                      </ul>  
-
-
+                        <li> <%= marineJSON.hourly.wave_height[k+(j*24)]%> ft</li>
+                      </ul>
                     </td>
+                  </td>
                   <% }%>
+                <% }%>
+              </tr>
 
-
-                </tr>
-
-                <tr> 
-
-
-                  <% for(let j = 0; j < 8; j++) {%>
-                    <td> 
-
-
-                      <!--Might need a new div to style correctly--> 
+              <tr>
+                <td>Wave Direction</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
                       <ul>
-                        <% for(let k = 0; k < 24; k++) {%>
-                          <!--This line gets each hour's data for the measurement that the i loop is on-->
-                          <li> <%= marineJSON.hourly.wave_period[k+(j*24)]%> </li>
-                        <% }%>
-                      </ul>  
-
-
+                        <li> <%= marineJSON.hourly.wave_direction[k+(j*24)]%>°</li>
+                      </ul>
                     </td>
+                  </td>
                   <% }%>
+                <% }%>
+              </tr>
 
-                </tr>
-
+              <tr>
+                <td>Wave Direction</td>
+                <% for(let j = 0; j < 8; j++) {%>
+                  <% for(let k = 0; k < 24; k++) {%>
+                    <td>
+                      <ul>
+                        <li> <%= marineJSON.hourly.wave_period[k+(j*24)]%>s</li>
+                      </ul>
+                    </td>
+                  </td>
+                  <% }%>
+                <% }%>
+              </tr>
 
             </tbody>
           </table>
+
           <form action = "/users/addLocation" method = "POST">
           <input type ="number" id = "latitude" name = "latitude" placeholder="Latitude" min = "-179.9999" max = "179.9999">
           <input type ="number" id = "longitude" name = "longitude" placeholder="Longitude" min = "-179.9999" max = "179.9999">
@@ -243,9 +205,7 @@
         </div>
         
       </div>
-      
 
-      
       <div id = "page_bottom"> 
         <nav id = "map"><a href = "">Add location</a></nav>
         <nav id = "parameters"><a href = "/preferences">Adjust Parameters</a></nav>
