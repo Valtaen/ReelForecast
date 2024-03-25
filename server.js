@@ -43,8 +43,21 @@ app.get("/users/login", checkAuthenticated, (req, res) => {
   res.render("login.ejs");
 });
 
-app.get("/users/dashboard", checkNotAuthenticated, (req, res) => {
-  res.render("dashboardtemp", { user: req.user.name });
+app.get("/users/dashboard", checkNotAuthenticated, async (req, res) => {
+  try {
+    latLong = await getLatLong(req.session.passport.user)
+    const marineURL = 'https://marine-api.open-meteo.com/v1/marine?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=wave_height,wave_direction,wave_period&timezone=America%2FNew_York&length_unit=imperial';
+    const weatherURL = 'https://api.open-meteo.com/v1/forecast?latitude=' + latLong[0] + '&longitude=' + latLong[1] + '&hourly=temperature_2m,precipitation,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=kn&timezone=America%2FNew_York&forecast_days=14'
+    console.log(marineURL, weatherURL);      
+    const marineData = await fetch(marineURL);
+    const weatherData = await fetch(weatherURL);
+    const marineJSON = await marineData.json();
+    const weatherJSON = await weatherData.json();
+    res.render("dashboard", { user: req.user.name, weatherJSON, marineJSON })
+
+  } catch (error) {
+      console.log('Error!!')
+  }
 });
 
 app.post("/users/apiCall", checkNotAuthenticated, async (req, res) => {
@@ -141,6 +154,11 @@ app.post(
     failureFlash: true
   })
 );
+
+app.post("/users/addLocation", (req, res) =>{
+  //req.body is the data sent by the form, latitude and longitude are the *name* attribute in the form.
+  console.log(req.body.latitude + " " + req.body.longitude);
+})
 
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
