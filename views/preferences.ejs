@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href = "/views/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+
+    <div id = "wrapper">
+
+        <div id = "page_top">
+            <div id = "logo"><a href = ""><img src = "" alt = "the logo"></a></div>
+            <div id = "profile"><img src = "" alt = "profile picture"></div>
+            <h4></h4>
+            <div id = "logout"><a href="/users/logout">Logout</a></div>
+        </div>
+
+        <div id = "content">
+            <div id = "conditions">
+
+                <table>
+                    <form action = "/users/updateConditions" method = "POST" >
+                        <tr> 
+                            <td> Temperature <input type="text" id = "m1" name = "measurement1" placeholder="90"> °F </td>
+                            
+                            <td> Wave Direction <input type="text" id = "m2" name = "measurement2" placeholder="0"> °  </td>
+                        </tr>
+                        
+                        <tr> 
+                            <td> Wind Speed <input type="text" id = "m3" name = "measurement3" placeholder="12"> mph  </td> 
+                            
+                            <td> Wave Height <input type="text" id = "m4" name = "measurement4" placeholder="2"> ft. </td>
+                        </tr>
+
+                        <tr> 
+                            <td> Precipitation <input type="text" id = "m5" name = "measurement5" placeholder="s"> in. </td> 
+                            
+                            <td> Wave Period <input type="text" id = "m6" name = "measurement6" placeholder = "2"> s </td>
+                        </tr>
+   
+                        <input type = "submit" id = "submit" value = "Update Acceptable Parameters"> 
+                        
+                    </form>
+                </table>
+                
+            </div>
+            
+        </div>
+
+        <div id = "page_bottom">
+            <nav id = "home"><a href = "/users/dashboard">home</a></nav>
+        </div>
+
+    </div>
+    
+   </body>
