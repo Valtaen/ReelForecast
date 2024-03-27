@@ -46,13 +46,27 @@
     overflow: scroll;
 }
 
-#content table tbody ul{
+#conditions{
+    width: 50%;
+    margin: 0% 22% 0% 22%;
+}
+
+#conditions table td{
+    padding: 4px;
+}
+
+#conditions #m1, #m2, #m3, #m4, #m5, #m6{
+    width: 20%;
+    text-align: right;
+}
+
+#forecast table tbody ul{
     list-style-type: none;
     display:flex;
     flex-direction: row;
 }
 
-table, th, tr, td {
+#forecast table, th, tr, td {
     border:1px solid black;
   }
 
