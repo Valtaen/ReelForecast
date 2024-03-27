@@ -203,6 +203,28 @@ app.post("/users/addLocation", (req, res) =>{
 
 })
 
+app.post("/users/updateConditions", (req, res) =>{
+  let userID = [req.session.passport.user];
+  let q = 
+  "UPDATE user_conditions " + 
+  "SET temperature = $1, wave-direction = $2, wind-speed = $3, wave-height = $4, precipitation = $5, wave-period = $6" +
+  "WHERE id = $7";
+
+  
+  let newParams = [
+    req.body.measurement1,
+    req.body.measurement2,
+    req.body.measurement3,
+    req.body.measurement4,
+    req.body.measurement5,
+    req.body.measurement6
+  ];
+
+
+  for(let i = 0; i < newParams.length; i++)
+  console.log(newParams[i]);
+})
+
 function checkAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return res.redirect("/users/dashboard");
